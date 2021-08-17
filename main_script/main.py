@@ -69,11 +69,11 @@ MDScreen:
 class TestApp(MDApp):
     started = False
     seconds = 0
-    vremja = 10
+    vremja = 0
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        Clock.schedule_interval(self.update_time, 0)
+        #Clock.schedule_interval(self.update_time, 0)
 
 
     def build(self):
@@ -94,6 +94,7 @@ class TestApp(MDApp):
         self.root.ids.start_stop.text = "START" if self.started else "STOP"
         self.started = not self.started
         self.root.ids.reset.disabled = True if self.started else False
+        Clock.schedule_interval(self.update_time, 0)
 
     def reset(self):
         if self.started:
@@ -101,13 +102,13 @@ class TestApp(MDApp):
         self.seconds = 0
 
     def show_time(self):
-        vremja = 0
+        self.vremja = 0
         try:
             if self.root.ids.minut.text.isdigit() or self.root.ids.chas.text.isdigit():
                 try:
                     if self.root.ids.minut.text.isdigit():
                         a = int(self.root.ids.minut.text) * 60
-                        vremja += a
+                        self.vremja += a
                     else:
                         if len(self.root.ids.minut.text):
                             self.snacbar = Snackbar(text="Проверьте правильно ли вы ввели значение минут!")
@@ -117,7 +118,7 @@ class TestApp(MDApp):
                 try:
                     if self.root.ids.chas.text.isdigit():
                         b = int(self.root.ids.chas.text) * 3600
-                        vremja += b
+                        self.vremja += b
                     else:
                         if len(self.root.ids.chas.text) > 0:
                             self.snacbar = Snackbar(text="Проверьте правильно ли вы ввели значение часов!")
@@ -126,9 +127,9 @@ class TestApp(MDApp):
                 except:
                     pass
 
-                if vremja != 0:
+                if self.vremja != 0:
                     self.start_stop()
-                    return vremja
+                    return self.vremja
 
             else:
                 self.snacbar = Snackbar(text="Введёное значение должно быть числом.")
