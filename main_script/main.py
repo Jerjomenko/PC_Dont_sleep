@@ -8,15 +8,25 @@ Window.size = (480, 350)
 
 KV = """
 MDScreen:
-    md_bg_color: .5, .3, .4, .4
+    canvas:
+        Color:
+            rgba: 1, 1, 1, 15
+        Rectangle:
+            source: "kosmos.jpg"
+            size: self.size
+            pos: self.pos
     
     MDLabel:
         text: " Введите необходимое время работы программы"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
         pos_hint: {"center_x": .5, "center_y": .93}
         font_style: "H6"
     
     MDLabel:
         id: t
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
         halign: "center"
         markup: True
         
@@ -34,12 +44,16 @@ MDScreen:
         
     MDLabel:
         text: "Часы"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
         font_style: "H6"
         bold: True
         pos_hint: {"center_x": .74, "center_y": .72} 
         
     MDLabel:
         text: "Минуты"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
         font_style: "H6"
         bold: True
         pos_hint: {"center_x": 1.11, "center_y": .72} 
@@ -73,7 +87,14 @@ class TestApp(MDApp):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        #Clock.schedule_interval(self.update_time, 0)
+
+
+    def on_start(self):
+        ch = "0"
+        m = "0"
+        s = "0"
+        part_s = "0"
+        self.root.ids.t.text = f"[size=45]{int(ch):02}[/size][size=30]:[size=45]{int(m):02}[/size][size=30]:[/size][size=60]{int(s):02}[/size][size=30].[/size][size=30]{int(part_s):02}[/size]"
 
 
     def build(self):
