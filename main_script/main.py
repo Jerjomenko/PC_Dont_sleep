@@ -3,6 +3,10 @@ from kivy.lang import Builder
 from kivy.core.window import  Window
 from kivy.clock import Clock
 from kivymd.uix.snackbar import Snackbar
+import pyautogui
+import datetime
+import random
+
 
 Window.size = (480, 350)
 
@@ -58,7 +62,14 @@ MDScreen:
         bold: True
         pos_hint: {"center_x": 1.11, "center_y": .72} 
          
-  
+    MDLabel:
+        id: realtime
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+        bold: True
+        halign: "center"
+        pos_hint: {"center_x": .5, "center_y": .3} 
+        
            
     MDRaisedButton:
         id: start_stop
@@ -95,10 +106,16 @@ class TestApp(MDApp):
         s = "0"
         part_s = "0"
         self.root.ids.t.text = f"[size=45]{int(ch):02}[/size][size=30]:[size=45]{int(m):02}[/size][size=30]:[/size][size=60]{int(s):02}[/size][size=30].[/size][size=30]{int(part_s):02}[/size]"
-
+        Clock.schedule_interval(self.get_table_time, 1)
 
     def build(self):
         return Builder.load_string(KV)
+
+    def get_table_time(self, *args):
+        t_now = datetime.datetime.now()
+        str_t = t_now.strftime("%H:%M:%S")
+        self.root.ids.realtime.text = str_t
+
 
 
     def update_time(self, obj):
@@ -150,6 +167,7 @@ class TestApp(MDApp):
 
                 if self.vremja != 0:
                     self.start_stop()
+                    Clock.schedule_interval(self.move_mouse, 5)
                     return self.vremja
 
             else:
@@ -157,6 +175,9 @@ class TestApp(MDApp):
                 self.snacbar.open()
         except ValueError:
             print("Введёное значение должно быть числом.")
+
+    def move_mouse(self, *args):
+        pyautogui.moveTo(random.randint(200, 1000), random.randint(200, 1000))
 
 
 
